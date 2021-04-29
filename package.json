@@ -1,6 +1,6 @@
 {
   "name": "swagger-ui-plugin-extra-description",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Swagger-ui plugin to display extra description blocks between info and paths",
   "main": "dist/index.js",
   "scripts": {
