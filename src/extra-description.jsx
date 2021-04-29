@@ -4,6 +4,22 @@ import React from "react"
 const createDeepLinkPath = (str) => typeof str == "string" || str instanceof String ? str.trim().replace(/\s/g, "%20") : ""
 const escapeDeepLinkPath = (str) => createDeepLinkPath(str).replace(/%20/g, "_")
 
+export class ExtraDescriptions extends React.Component {
+  render() {
+    return <div id="extra-descriptions">
+      {
+        this.props.extraDescriptions
+          .map((extraDescription, key) => <ExtraDescription {...this.props}
+            key={key}
+            title={extraDescription.title}
+            forceOpen={extraDescription.forceOpen}
+            content={extraDescription.content}
+          />)
+      }
+    </div>
+  }
+}
+
 /**
  * This component display a collapsible section with markdown content.
  * It was inspired by https://github.com/swagger-api/swagger-ui/blob/cc408812fc/src/core/components/operation-tag.jsx
@@ -18,48 +34,42 @@ export class ExtraDescription extends React.Component {
 
     const isDeepLinkingEnabled = deepLinking && deepLinking !== "false"
 
-    return <div id="extra-descriptions">
-      {
-        this.props.extraDescriptions.map((extraDescription, key) => {
-          const tag = extraDescription.title
-          const forceOpen = extraDescription.forceOpen || false
-          const isShownKey = ["extra-description", tag]
-          const showTag = forceOpen || this.props.layoutSelectors.isShown(isShownKey)
+    const tag = this.props.title
+    const forceOpen = this.props.forceOpen || false
+    const isShownKey = ["extra-description", tag]
+    const showTag = forceOpen || this.props.layoutSelectors.isShown(isShownKey)
 
-          return <div key={key} className={showTag ? "opblock-tag-section is-open" : "opblock-tag-section"}>
-            <h5
-              onClick={() => this.props.layoutActions.show(isShownKey, !showTag)}
-              className="opblock-tag"
-              style={{ fontSize: '20px' }}
-              id={isShownKey.map(v => escapeDeepLinkPath(v)).join("-")}
-              data-tag={tag}
-              data-is-open={showTag}
-            >
-              <DeepLink
-                enabled={isDeepLinkingEnabled}
-                isShown={showTag}
-                path={createDeepLinkPath(tag)}
-                text={tag} />
+    return <div className={showTag ? "opblock-tag-section is-open" : "opblock-tag-section"}>
+      <h5
+        onClick={() => this.props.layoutActions.show(isShownKey, !showTag)}
+        className="opblock-tag"
+        style={{ fontSize: '20px' }}
+        id={isShownKey.map(v => escapeDeepLinkPath(v)).join("-")}
+        data-tag={tag}
+        data-is-open={showTag}
+      >
+        <DeepLink
+          enabled={isDeepLinkingEnabled}
+          isShown={showTag}
+          path={createDeepLinkPath(tag)}
+          text={tag} />
 
-              {(!forceOpen) &&
-                <button
-                  className="expand-operation"
-                  title={showTag ? "Collapse description" : "Expand description"}
-                  onClick={() => this.props.layoutActions.show(isShownKey, !showTag)}>
+        {(!forceOpen) &&
+          <button
+            className="expand-operation"
+            title={showTag ? "Collapse description" : "Expand description"}
+            onClick={() => this.props.layoutActions.show(isShownKey, !showTag)}>
 
-                  <svg className="arrow" width="20" height="20">
-                    <use href={showTag ? "#large-arrow-down" : "#large-arrow"} xlinkHref={showTag ? "#large-arrow-down" : "#large-arrow"} />
-                  </svg>
-                </button>
-              }
-            </h5>
+            <svg className="arrow" width="20" height="20">
+              <use href={showTag ? "#large-arrow-down" : "#large-arrow"} xlinkHref={showTag ? "#large-arrow-down" : "#large-arrow"} />
+            </svg>
+          </button>
+        }
+      </h5>
 
-            <Collapse isOpened={showTag}>
-              <Markdown source={extraDescription.content} />
-            </Collapse>
-          </div>
-        })
-      }
+      <Collapse isOpened={showTag}>
+        <Markdown source={this.props.content} />
+      </Collapse>
     </div>
   }
 }

@@ -1,4 +1,4 @@
-import { ExtraDescription } from './extra-description';
+import { ExtraDescriptions, ExtraDescription } from './extra-description';
 
 export const ExtraDescriptionPluginFactory = (extraDescriptions) => {
   return (system) => {
@@ -7,15 +7,16 @@ export const ExtraDescriptionPluginFactory = (extraDescriptions) => {
         extraDescriptions: extraDescriptions
       },
       components: {
+        ExtraDescriptions: ExtraDescriptions,
         ExtraDescription: ExtraDescription
       },
       wrapComponents: {
         InfoContainer: (Original, { React }) => (props) => {
-          const ExtraDescription = system.getComponent("ExtraDescription", true)
+          const ExtraDescriptions = system.getComponent("ExtraDescriptions", true)
 
           return <div>
             <Original {...props} />
-            <ExtraDescription {...props} />
+            <ExtraDescriptions {...props} />
           </div>
         },
       }
