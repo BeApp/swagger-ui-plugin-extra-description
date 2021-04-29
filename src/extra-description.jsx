@@ -1,5 +1,4 @@
 import React from "react"
-import PropTypes from "prop-types"
 
 // Forked from https://github.com/swagger-api/swagger-ui/blob/aee8cc5a17/src/core/utils.js
 const createDeepLinkPath = (str) => typeof str == "string" || str instanceof String ? str.trim().replace(/\s/g, "%20") : ""
@@ -9,7 +8,7 @@ const escapeDeepLinkPath = (str) => createDeepLinkPath(str).replace(/%20/g, "_")
  * This component display a collapsible section with markdown content.
  * It was inspired by https://github.com/swagger-api/swagger-ui/blob/cc408812fc/src/core/components/operation-tag.jsx
  */
-export default class ExtraDescription extends React.Component {
+export class ExtraDescription extends React.Component {
   render() {
     const Markdown = this.props.getComponent("Markdown", true)
     const Collapse = this.props.getComponent("Collapse")
